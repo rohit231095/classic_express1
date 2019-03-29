@@ -5,7 +5,6 @@ const decrypt = require('../methods/encryption').decrypt;
 const secret = require('../config/config').secret_key;
 
 const bcrypt = require('bcrypt');
-const crypto = require('crypto');
 const httpStatus = require('http-status-codes');
 const schedule = require('node-schedule');
 const Sequelize = require('sequelize');

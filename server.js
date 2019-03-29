@@ -1,11 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 
 const db = require('./config/database');
 
 app.use(bodyParser.urlencoded({
-	extended: true
+    extended: true
 }));
 
 // routes imported
@@ -31,6 +32,23 @@ db.sync({
         // createStates();
         // createCities();
     })
+
+app.use(cors());
+// app.use(function (req, res, next) {
+//     console.log("------------ ---------------------------");
+//     //console.log("------",cors().role);
+//     res.setHeader("Access-Control-Allow-Origin", "*");
+//     res.setHeader(
+//         "Access-Control-Allow-Headers",
+//         "Origin, Content-Length,  X-Requested-With, Content-Type, Accept, Authorization, request-node-status"
+//     );
+//     res.setHeader(
+//         "Access-Control-Allow-Methods",
+//         "GET, POST, OPTIONS, HEAD, PUT, PATCH, DELETE"
+//     );
+//     res.setHeader('Access-Control-Allow-Credentials', true);
+//     next();
+// });
 
 const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
