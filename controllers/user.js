@@ -203,7 +203,8 @@ exports.login = (req, res, next) => {
             model: Roles
         }]
     })
-        .then(async user => {
+        .then(user => {
+            console.log(user);
             if (user !== null) {
                 passwordValidate = bcrypt.compareSync(body.password, user.password);
                 console.log('IsValid ===>', passwordValidate);
