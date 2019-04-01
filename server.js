@@ -9,6 +9,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+app.use(bodyParser.json());
+
 // routes imported
 const routes = require('./routes/router');
 app.use(routes);
