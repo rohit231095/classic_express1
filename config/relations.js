@@ -7,8 +7,8 @@ relation.states = require('../models/state');
 relation.cities = require('../models/city');
 relation.otps = require('../models/otp');
 
-relation.users.belongsToMany(relation.roles, { foreignKey: 'roleId', through: 'userRoles' });
-relation.roles.belongsToMany(relation.users, { foreignKey: 'userId', through: 'userRoles' });
+relation.users.belongsToMany(relation.roles, { foreignKey: 'userId', through: 'userRoles' });
+relation.roles.belongsToMany(relation.users, { foreignKey: 'roleId', through: 'userRoles' });
 relation.users.belongsTo(relation.countries, { foreignKey: 'countryId' });
 relation.users.belongsTo(relation.states, { foreignKey: 'stateId' });
 relation.users.belongsTo(relation.cities, { foreignKey: 'cityId' });
