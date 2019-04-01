@@ -20,8 +20,12 @@ router.get('/api/roles', roleController.get);
 
 router.get('/api/countries', countryController.get);
 
-router.get('/api/states/:id', stateController.get);
+router.get('/api/states/:id', stateController.getById);
 
-router.get('/api/cities/:id', cityController.get);
+router.get('/api/cities/:id', cityController.getById);
+
+router.get('/api/states', stateController.get);
+
+router.get('/api/cities', cityController.get);
 
 module.exports = router;
