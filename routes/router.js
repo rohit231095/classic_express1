@@ -16,6 +16,8 @@ router.post('/api/verifyOTP', userController.otpVerify);
 
 router.post('/api/user/login', userController.login);
 
+router.get('/api/user/:userName', userController.checkUser);
+
 router.get('/api/roles', roleController.get);
 
 router.get('/api/countries', countryController.get);

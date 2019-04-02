@@ -244,6 +244,39 @@ exports.login = (req, res, next) => {
         })
 }
 
+exports.checkUser = (req, res, nex) => {
+    console.log('username ===>', req.params);
+    Users.findOne({
+        where: {
+            userName: encrypt(req.params.userName)
+        }
+    })
+        .then(user => {
+            if (user !== null) {
+                user.userName = decrypt(user.userName);
+                user.firstName = decrypt(user.firstName);
+                user.lastName = decrypt(user.lastName);
+                user.gender = decrypt(user.gender);
+                user.streetAddress = decrypt(user.streetAddress);
+                user.email = decrypt(user.email);
+                user.mobile = decrypt(user.mobile);
+                res.status(httpStatus.OK).json({
+                    user: user,
+                    status: 200
+                });
+            } else {
+                res.status(httpStatus.UNPROCESSABLE_ENTITY).json({
+                    message: 'User not found',
+                    status: 422
+                });
+            }
+        })
+        .catch(err => {
+            console.log('Error ===>', err);
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).json(err);
+        })
+}
+
 diff_minutes = (dt2, dt1) => {
 
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
