@@ -410,6 +410,37 @@ exports.getUser = (req, res, next) => {
         })
 }
 
+exports.getAdmin = (req,res,next) => {
+    Users.findOne({
+        where: {
+            userId: req.userId
+        }
+    })
+    .then(user => {
+        if (user !== null) {
+            user.userName = decrypt(user.userName);
+            user.firstName = decrypt(user.firstName);
+            user.lastName = decrypt(user.lastName);
+            user.gender = decrypt(user.gender);
+            user.streetAddress = decrypt(user.streetAddress);
+            user.email = decrypt(user.email);
+            user.mobile = decrypt(user.mobile);
+            res.status(httpStatus.OK).json({
+                user: user,
+                status: 200
+            });
+        } else {
+            res.status(httpStatus.UNPROCESSABLE_ENTITY).json({
+                message: 'User not found'
+            })
+        }
+    })
+    .catch(err => {
+        console.log('Error ===>',err);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json(err);
+    })
+}
+
 diff_minutes = (dt2, dt1) => {
 
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
