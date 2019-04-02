@@ -205,6 +205,8 @@ exports.login = (req, res, next) => {
         .then(user => {
             console.log(user);
             if (user !== null) {
+                roles = user.roles[0];
+                // console.log(roles);
                 passwordValidate = bcrypt.compareSync(body.password, user.password);
                 console.log('IsValid ===>', passwordValidate);
                 if (passwordValidate) {
@@ -217,6 +219,7 @@ exports.login = (req, res, next) => {
                         auth: true,
                         accessToken: token,
                         user: user,
+                        role: roles,
                         message: "Successfully Logged In"
                     });
                 } else {
