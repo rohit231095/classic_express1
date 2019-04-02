@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-
+app.use(cors());
 const db = require('./config/database');
 
 app.use(bodyParser.urlencoded({
@@ -35,7 +35,7 @@ db.sync({
         // createCities();
     })
 
-app.use(cors());
+
 // app.use(function (req, res, next) {
 //     console.log("------------ ---------------------------");
 //     //console.log("------",cors().role);
