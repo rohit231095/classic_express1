@@ -216,6 +216,7 @@ exports.login = (req, res, next) => {
                     res.status(httpStatus.OK).send({
                         auth: true,
                         accessToken: token,
+                        user: user,
                         message: "Successfully Logged In"
                     });
                 } else {
