@@ -18,11 +18,11 @@ router.post('/api/verifyOTP', userController.otpVerify);
 
 router.post('/api/user/login', userController.login);
 
+router.get('/api/user/getUser', [jwtAuth], userController.getUser);
+
 router.get('/api/user/:userName', userController.checkUser);
 
 router.post('/api/user/addUser', [jwtAuth], userController.addUser);
-
-router.get('/api/user/getUser', [jwtAuth], userController.getUser);
 
 router.get('/api/roles', roleController.get);
 

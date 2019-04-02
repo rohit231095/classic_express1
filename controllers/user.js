@@ -380,9 +380,10 @@ exports.addUser = (req, res, next) => {
 }
 
 exports.getUser = (req, res, next) => {
+    const usersArr = [];
     Users.findAll({
         where: {
-            userAdmin: req.user
+            userAdmin: req.userId
         }
     })
         .then(user => {
