@@ -3,7 +3,7 @@ const httpStatus = require('http-status-codes');
 
 const secret = require('../config/config').secret_key;
 
-verifyToken = (req, res, next) => {
+exports.verifyToken = (req, res, next) => {
     const token = req.body.token || req.query.token || req.headers['x-access-token'];
 
     if (!token){
@@ -13,7 +13,7 @@ verifyToken = (req, res, next) => {
 		});
     }
     
-    jwt.verify(token, config.secret, (err, decoded) => {
+    jwt.verify(token, secret, (err, decoded) => {
 		if (err){
 			return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ 
 					auth: false, 

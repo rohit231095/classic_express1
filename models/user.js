@@ -37,6 +37,9 @@ const User = sequelize.define('users', {
     isActive: {
         type: Sequelize.BOOLEAN,
         defaultValue: true
+    },
+    userAdmin: {
+        type: Sequelize.INTEGER
     }
 });
 

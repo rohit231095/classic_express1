@@ -277,6 +277,138 @@ exports.checkUser = (req, res, nex) => {
         })
 }
 
+exports.addUser = (req, res, next) => {
+    const body = req.body;
+    console.log('User ===>', body);
+
+    Users.findOne({
+        where: {
+            userId: req.userId
+        }
+    })
+        .then(async user => {
+            if (body['email'] !== undefined) {
+                userUserNameErr = await Users.findOne({
+                    where: {
+                        [Op.and]: [{
+                            isActive: true
+                        }, {
+                            userName: encrypt(body.email)
+                        }]
+                    }
+                });
+            } else {
+                userUserNameErr = null;
+            }
+
+            if (body['mobile'] !== undefined) {
+                userContactErr = await Users.findOne({
+                    where: {
+                        [Op.and]: [{
+                            isActive: true
+                        }, {
+                            mobile: encrypt(body.mobile)
+                        }]
+                    }
+                });
+            } else {
+                userContactErr = null;
+            }
+
+            if (userContactErr !== null) {
+                console.log('Duplicate Contact, user not created');
+
+                messageContactErr = "Contact already exist for another user";
+
+            } else {
+                messageContactErr = "";
+            }
+
+            if (userUserNameErr !== null) {
+                console.log('Duplicate Email, user not created');
+
+                messageEmailErr = "Email already exist for another user";
+
+            } else {
+                messageEmailErr = "";
+            }
+
+            const messageErr = {
+                messageEmailErr: messageEmailErr,
+                messageContactErr: messageContactErr
+            };
+
+            if ((messageErr.messageEmailErr === '') && (messageErr.messageContactErr === '')) {
+
+                const create = {
+                    userName: encrypt(body.email),
+                    firstName: encrypt(body.firstName),
+                    lastName: encrypt(body.lastName),
+                    gender: encrypt(body.gender),
+                    streetAddress: encrypt(body.streetAddress),
+                    email: encrypt(body.email),
+                    mobile: encrypt(body.mobile),
+                    password: bcrypt.hashSync(body.password, 8),
+                    countryId: user.countryId,
+                    stateId: user.stateId,
+                    cityId: user.cityId,
+                    userAdmin: req.userId
+                }
+
+                Users.create(create)
+                    .then(user => {
+                        return res.status(httpStatus.CREATED).json({
+                            message: "User registered successfully!"
+                        });
+                    })
+                    .catch(err => {
+                        console.log('Creation Error ===>', err);
+                        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+                            message: err
+                        })
+                    })
+            } else {
+                return res.status(httpStatus.CONFLICT).json(messageErr);
+            }
+        })
+        .catch(err => {
+            console.log('Creation Error ===>', err);
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+                message: err
+            })
+        })
+}
+
+exports.getUser = (req, res, next) => {
+    Users.findAll({
+        where: {
+            userAdmin: req.user
+        }
+    })
+        .then(user => {
+            user.map(item => {
+                item.userName = decrypt(item.userName);
+                item.firstName = decrypt(item.firstName);
+                item.lastName = decrypt(item.lastName);
+                item.gender = decrypt(item.gender);
+                item.streetAddress = decrypt(item.streetAddress);
+                item.email = decrypt(item.email);
+                item.mobile = decrypt(item.mobile);
+                usersArr.push(item);
+            })
+            return usersArr;
+        })
+        .then(users => {
+            res.status(httpStatus.OK).json({
+                users: users
+            })
+        })
+        .catch(err => {
+            console.log('Error ===>', err);
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).json(err);
+        })
+}
+
 diff_minutes = (dt2, dt1) => {
 
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
