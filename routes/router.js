@@ -14,7 +14,7 @@ router.post('/api/user', userController.signup);
 
 router.post('/api/verifyOTP', userController.otpVerify);
 
-router.get('/api/user', userController.login);
+router.post('/api/user/login', userController.login);
 
 router.get('/api/roles', roleController.get);
 
