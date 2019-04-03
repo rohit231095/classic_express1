@@ -215,7 +215,7 @@ exports.login = (req, res, next) => {
                     }, secret, {
                             expiresIn: 86400 // expires in 24 hours
                         });
-                    res.status(httpStatus.OK).send({
+                    res.status(httpStatus.OK).json({
                         auth: true,
                         accessToken: token,
                         status: 200,
@@ -224,14 +224,14 @@ exports.login = (req, res, next) => {
                         message: "Successfully Logged In"
                     });
                 } else {
-                    return res.status(httpStatus.UNAUTHORIZED).send({
+                    return res.status(httpStatus.UNAUTHORIZED).json({
                         auth: false,
                         message: "Invalid Password!"
 
                     });
                 }
             } else {
-                return res.status(httpStatus.UNAUTHORIZED).send({
+                return res.status(httpStatus.UNAUTHORIZED).json({
                     auth: false,
                     message: "Invalid Username!"
                 });
@@ -284,7 +284,7 @@ exports.adminLogin = (req, res, next) => {
                         }, secret, {
                                 expiresIn: 86400 // expires in 24 hours
                             });
-                        res.status(httpStatus.OK).send({
+                        res.status(httpStatus.OK).json({
                             auth: true,
                             accessToken: token,
                             status: 200,
@@ -293,14 +293,14 @@ exports.adminLogin = (req, res, next) => {
                             message: "Successfully Logged In"
                         });
                     } else {
-                        return res.status(httpStatus.UNAUTHORIZED).send({
+                        return res.status(httpStatus.UNAUTHORIZED).json({
                             auth: false,
                             message: "Invalid Password!"
 
                         });
                     }
                 } else {
-                    return res.status(httpStatus.UNAUTHORIZED).send({
+                    return res.status(httpStatus.UNAUTHORIZED).json({
                         auth: false,
                         message: "Invalid Username!"
                     });
