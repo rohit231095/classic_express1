@@ -20,6 +20,8 @@ router.post('/api/user/login', userController.login);
 
 router.post('/api/adminLogin', userController.adminLogin);
 
+router.get('/api/getAdminObj/:id', userController.getAdminById);
+
 router.get('/api/user/getUser', [jwtAuth], userController.getUser);
 
 router.get('/api/user/:userName', [jwtAuth], userController.checkUser);
