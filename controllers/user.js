@@ -244,6 +244,81 @@ exports.login = (req, res, next) => {
         })
 }
 
+exports.adminLogin = (req, res, next) => {
+    const body = req.body;
+
+    if (!body.userName) {
+        return res.status(httpStatus.UNPROCESSABLE_ENTITY).json({
+            message: "Username cannot be empty"
+        })
+    }
+    if (!body.password) {
+        return res.status(httpStatus.UNPROCESSABLE_ENTITY).json({
+            message: "Password cannot be empty"
+        })
+    }
+
+    Users.findOne({
+        where: {
+            [Op.and]: [{
+                userName: encrypt(body.userName)
+            }, {
+                isActive: true
+            }]
+        },
+        include: [{
+            model: Roles
+        }]
+    })
+        .then(user => {
+            if (user.roles.roleName === 'ADMIN') {
+                console.log(user);
+                if (user !== null) {
+                    roles = user.roles[0];
+                    // console.log(roles);
+                    passwordValidate = bcrypt.compareSync(body.password, user.password);
+                    console.log('IsValid ===>', passwordValidate);
+                    if (passwordValidate) {
+                        const token = jwt.sign({
+                            id: user.userId
+                        }, secret, {
+                                expiresIn: 86400 // expires in 24 hours
+                            });
+                        res.status(httpStatus.OK).send({
+                            auth: true,
+                            accessToken: token,
+                            status: 200,
+                            user: user,
+                            role: roles,
+                            message: "Successfully Logged In"
+                        });
+                    } else {
+                        return res.status(httpStatus.UNAUTHORIZED).send({
+                            auth: false,
+                            message: "Invalid Password!"
+
+                        });
+                    }
+                } else {
+                    return res.status(httpStatus.UNAUTHORIZED).send({
+                        auth: false,
+                        message: "Invalid Username!"
+                    });
+                } 
+            }
+            else {
+                res.status(httpStatus.UNAUTHORIZED).json({
+                    message: 'Is not ADMIN. Please check again'
+                })
+            }
+        })
+        .catch(err => {
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+                "message": err
+            });
+        })
+}
+
 exports.checkUser = (req, res, nex) => {
     console.log('username ===>', req.params);
     Users.findOne({
