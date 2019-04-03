@@ -271,7 +271,7 @@ exports.adminLogin = (req, res, next) => {
         }]
     })
         .then(user => {
-            if (user.roles.roleName === 'ADMIN') {
+            if (user.roles[0].roleName === 'ADMIN') {
                 console.log(user);
                 if (user !== null) {
                     roles = user.roles[0];
