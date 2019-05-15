@@ -271,7 +271,7 @@ exports.adminLogin = (req, res, next) => {
         },
         include: [{
             model: Roles
-        }]
+        },{model:Country},{model:City},{model:State}]
     })
         .then(user => {
             if (user.roles[0].roleName === 'ADMIN') {
@@ -490,7 +490,9 @@ exports.addUser = (req, res, next) => {
 
 exports.getUser = (req, res, next) => {
     const usersArr = [];
-    Users.findAll()
+    Users.findAll({include: [{
+        model: Roles
+    },{model:Country},{model:City},{model:State}]})
         .then(user => {
             user.map(item => {
                 item.userName = decrypt(item.userName);
