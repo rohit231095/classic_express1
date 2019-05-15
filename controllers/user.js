@@ -13,6 +13,9 @@ const jwt = require('jsonwebtoken');
 const Users = rel.users;
 const Roles = rel.roles;
 const OTPs = rel.otps;
+const Country = rel.countries;
+const State = rel.states;
+const City = rel.cities;
 
 const Op = Sequelize.Op;
 
@@ -200,7 +203,7 @@ exports.login = (req, res, next) => {
         },
         include: [{
             model: Roles
-        }]
+        },{model:Country},{model:City},{model:State}]
     })
         .then(user => {
             console.log(user);
@@ -487,11 +490,7 @@ exports.addUser = (req, res, next) => {
 
 exports.getUser = (req, res, next) => {
     const usersArr = [];
-    Users.findAll({
-        where: {
-            userAdmin: req.userId
-        }
-    })
+    Users.findAll()
         .then(user => {
             user.map(item => {
                 item.userName = decrypt(item.userName);

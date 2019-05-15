@@ -10,7 +10,7 @@ const countryController = require('../controllers/country');
 const stateController = require('../controllers/state');
 const cityController = require('../controllers/city');
 
-router.get('/', userController.start);
+router.get('/',userController.start);
 
 router.post('/api/user', userController.signup);
 
@@ -22,7 +22,7 @@ router.post('/api/adminLogin', userController.adminLogin);
 
 router.get('/api/getAdminObj/:id', userController.getAdminById);
 
-router.get('/api/user/getUser', [jwtAuth], userController.getUser);
+router.get('/api/user/getUser',  userController.getUser);
 
 router.get('/api/user/:userName', [jwtAuth], userController.checkUser);
 
