@@ -52,7 +52,7 @@ db.sync({
 //     next();
 // });
 
-const PORT = process.env.PORT || 8082;
+const PORT = process.env.PORT || 8085;
 app.listen(PORT, () => {
     console.log("App listening at ", PORT);
 })
